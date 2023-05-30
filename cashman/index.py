@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS,cross_origin
 from cashman.model.expense import Expense, ExpenseSchema
 from cashman.model.income import Income, IncomeSchema
 from cashman.model.transaction_type import TransactionType
@@ -43,6 +44,12 @@ def add_expense():
     expense = ExpenseSchema().load(request.get_json())
     transactions.append(expense)
     return "", 204
+
+# This doesn't need authentication
+@app.route("/ping")
+@cross_origin(headers=['Content-Type', 'Authorization'])
+def ping():
+    return "All good. You don't need to be authenticated to call this"
 
 
 if __name__ == "__main__":
